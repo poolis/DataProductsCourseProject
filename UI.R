@@ -1,8 +1,13 @@
+library(shiny)
 shinyUI(pageWithSidebar(  
-  headerPanel("Example plot"),  
+  headerPanel("My shiny project!"),  
   sidebarPanel(    
-    sliderInput('mu', 'Guess at the mu',value = 70, min = 60, max = 80, step = 0.05,)  ), 
+    sliderInput("n", label = "# of random standard normal variables",
+                min = 1, max = 10000, value = c(100)),
+    numericInput("mean", "Distribution mean", 0, min = -100, max = 100, step = 1),
+    numericInput("sd", "Distribution standard deviation", 1, min = 0, max = 100, step = 1)
+  ),
   mainPanel(    
-    plotOutput('newHist')  
+    plotOutput("rnormPlot")
   )
 ))
