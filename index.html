@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Data Products Course Project</title>
+  <meta charset="utf-8">
+  <meta name="description" content="Data Products Course Project">
+  <meta name="author" content="Greg Michalopoulos">
+  <meta name="generator" content="slidify" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/default.css" media="all" >
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/phone.css" 
+    media="only screen and (max-device-width: 480px)" >
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/slidify.css" >
+  <link rel="stylesheet" href="libraries/highlighters/highlight.js/css/tomorrow.css" />
+  <base target="_blank"> <!-- This amazingness opens all links in a new tab. -->  <link rel=stylesheet href="./assets/css/ribbons.css"></link>
+
+  
+  <!-- Grab CDN jQuery, fall back to local if offline -->
+  <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.7.min.js"></script>
+  <script>window.jQuery || document.write('<script src="libraries/widgets/quiz/js/jquery.js"><\/script>')</script> 
+  <script data-main="libraries/frameworks/io2012/js/slides" 
+    src="libraries/frameworks/io2012/js/require-1.0.8.min.js">
+  </script>
+  
+  
+
+</head>
+<body style="opacity: 0">
+  <slides class="layout-widescreen">
+    
+    <!-- LOGO SLIDE -->
+        <slide class="title-slide segue nobackground">
+  <hgroup class="auto-fadein">
+    <h1>Data Products Course Project</h1>
+    <h2>Coursera Data Science Specialization</h2>
+    <p>Greg Michalopoulos<br/></p>
+  </hgroup>
+  <article></article>  
+</slide>
+    
+
+    <!-- SLIDES -->
+    <slide class="" id="slide-1" style="background:;">
+  <hgroup>
+    <h2>My shiny application</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>My shiny application can help you understand the effect of</p>
+
+<ul>
+<li>Number of samples (n)</li>
+<li>Mean (mean)</li>
+<li>Standard deviation (sd)</li>
+</ul>
+
+<p>on a histogram of a random sample of normals.</p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>UI.R</h2>
+  </hgroup>
+  <article data-timings="">
+    <pre><code class="r">shinyUI(pageWithSidebar(  
+  headerPanel(&quot;Standard Normal Distribution&quot;),  
+  sidebarPanel(    
+    sliderInput(&quot;n&quot;, label = &quot;# of random standard normal variables&quot;,
+                min = 1, max = 1000, value = c(100)),
+    numericInput(&quot;mean&quot;, &quot;Distribution mean&quot;, 0, min = -100, max = 100, step = 1),
+    numericInput(&quot;sd&quot;, &quot;Distribution standard deviation&quot;, 1, min = 0, max = 100, step = 1),
+    h4(&quot;Adjust the parameters to change the histogram of random normals.&quot;),
+    h4(&quot;Slider: Adjusts the number (n) of random normals.&quot;),
+    h4(&quot;Mean (mean) and standard deviation (sd) adjust the respective 
+       parameter to the rnorm R function.&quot;)
+  ),
+  mainPanel(    
+    plotOutput(&quot;rnormPlot&quot;),
+    textOutput(&quot;rnormMean&quot;),
+    textOutput(&quot;rnormSd&quot;)
+  )
+))
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-3" style="background:;">
+  <hgroup>
+    <h2>Server.R</h2>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>Reactive expression is used to create the sample of normals.</li>
+<li>Reactive output is used to render the histogram plot.</li>
+</ul>
+
+<pre><code class="r">shinyServer(  
+  function(input, output) {   
+    set.seed(12345)
+    data &lt;- reactive(rnorm(input$n, mean = input$mean, sd = input$sd))
+
+    output$rnormPlot &lt;- renderPlot({
+      hist(data())
+    })
+
+    output$rnormMean &lt;- renderPrint({paste(&quot;Mean:    &quot;, mean(data()))})
+    output$rnormSd &lt;- renderPrint({paste(&quot;Std dev: &quot;, sd(data()))})
+  }
+)
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-4" style="background:;">
+  <hgroup>
+    <h2>An example plot</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>Looks like this:</p>
+
+<pre><code class="r">hist(rnorm(100, 0, 1))
+</code></pre>
+
+<p><img src="figure/unnamed-chunk-4-1.png" title="plot of chunk unnamed-chunk-4" alt="plot of chunk unnamed-chunk-4" width="500px" /></p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+    <slide class="backdrop"></slide>
+  </slides>
+  <div class="pagination pagination-small" id='io2012-ptoc' style="display:none;">
+    <ul>
+      <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=1 title='My shiny application'>
+         1
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=2 title='UI.R'>
+         2
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=3 title='Server.R'>
+         3
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=4 title='An example plot'>
+         4
+      </a>
+    </li>
+  </ul>
+  </div>  <!--[if IE]>
+    <script 
+      src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js">  
+    </script>
+    <script>CFInstall.check({mode: 'overlay'});</script>
+  <![endif]-->
+</body>
+  <!-- Load Javascripts for Widgets -->
+  
+  <!-- LOAD HIGHLIGHTER JS FILES -->
+  <script src="libraries/highlighters/highlight.js/highlight.pack.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <!-- DONE LOADING HIGHLIGHTER JS FILES -->
+   
+  </html>
